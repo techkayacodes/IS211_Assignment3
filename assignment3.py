@@ -9,14 +9,22 @@ def download_log_file(url):
         with open('web_log.csv', 'wb') as file:
             file.write(response.content)
             print("File downloaded successfully.")
+        return 'web_log.csv'  # Return the file path
     else:
-        print(f"Failed to download file. Status code: {response.status_code}")
+        raise Exception(f"Failed to download file. Status code: {response.status_code}")
 
 # URL to the datafile
 url = "http://s3.amazonaws.com/cuny-is211-spring2015/weblog.csv"
 
 # Call the function to download the file
-download_log_file(url)
+try:
+    file_path = download_log_file(url)
+    if file_path:
+        print(f"File path: {file_path}")
+    else:
+        print("File download failed.")
+except Exception as e:
+    print(f"An error occurred: {e}")
 
 def process_log_file(file_path):
     with open(file_path, 'r') as file:
